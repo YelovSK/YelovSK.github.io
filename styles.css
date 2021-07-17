@@ -2,7 +2,10 @@
 	width: 500px;
 	height: 500px;
 	margin: auto;
-	align-content: center;
-	color: red;
 	background: red;
+}
+
+p {
+	text-align: center;
+	font-size: 50px;
 }
