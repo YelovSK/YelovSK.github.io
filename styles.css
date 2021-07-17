@@ -1,11 +1,34 @@
 #centerDiz {
 	width: 500px;
 	height: 500px;
-	margin: auto;
-	background: blue;
+	background: red;
+	color: red;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 500px;
+	font-size: 30px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -250px;
+	margin-left: -250px;
+}
+
+#centerDiz:hover {
+	border-width: 5px;
+	border-color: black;
+	border-style: solid;
+	box-sizing: border-box;
+	color: white;
 }
 
 p {
-	text-align: center;
 	font-size: 50px;
+	margin-top: 3%;
+}
+
+body {
+	display: flex;
+	justify-content: center; /* align horizontal */
+	align-items: center; /* align vertical */
 }
