@@ -1,17 +1,38 @@
-<div class="specs-container">
-    <div class="spec" *ngFor="let spec of specs">
-        <div (click)="toggleSpec(spec)">
-            {{ spec.title }}
-        </div>
+<mat-accordion multi>
+    <mat-expansion-panel *ngFor="let spec of specs"
+        [disabled]="spec.items.length === 1 && !spec.items[0].description && !spec.items[0].image">
+        <!-- Header -->
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{ spec.title }}
+            </mat-panel-title>
 
-        <div class="spec-details" *ngIf="spec.expanded">
-            {{ spec.description }}
+            <mat-panel-description>
+                <p [innerText]="getSpecDescription(spec)" class="p-0"></p>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
 
-            <!--Custom content for specific specs -->
-            <ng-container *ngIf="spec.title === 'GPU'">
-                <img src="/assets/2head.png" alt="GPU Image" />
-                <p>Custom GPU content goes here</p>
-            </ng-container>
-        </div>
-    </div>
-</div>
+        <!-- Content: multiple items (nested) -->
+        <mat-accordion *ngIf="spec.items.length > 1" multi>
+            <mat-expansion-panel *ngFor="let item of spec.items" [disabled]="!item.description && !item.image">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{ item.name }}
+                    </mat-panel-title>
+
+                    <ng-template matExpansionPanelContent>
+                        <p [innerHtml]="item.description" class="p-0"></p>
+                        <img *ngIf="item.image" [src]="item.image" alt="Image of {{ item.name }}">
+                    </ng-template>
+                </mat-expansion-panel-header>
+            </mat-expansion-panel>
+        </mat-accordion>
+
+        <!-- Content: single item -->
+        <ng-template matExpansionPanelContent *ngIf="spec.items.length === 1">
+            <p [innerHtml]="spec.items[0].description" class="p-0"></p>
+            <img *ngIf="spec.items[0].image" [src]="spec.items[0].image" alt="Image of {{ spec.items[0].name }}">
+        </ng-template>
+
+    </mat-expansion-panel>
+</mat-accordion>

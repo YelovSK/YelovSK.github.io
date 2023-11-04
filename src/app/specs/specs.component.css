@@ -1,0 +1,24 @@
+.mat-expansion-panel:not(.mat-expanded) {
+    border-radius: 8px !important;
+    margin: 16px 0;
+}
+
+.mat-expansion-panel-header[aria-disabled=true] {
+    color: var(--mat-expansion-header-description-color);
+}
+
+img {
+    max-width: 30%;
+    max-height: 30%;
+}
+
+::ng-deep p a {
+    text-decoration: none;
+    color: #007BFF;
+    transition: color 0.3s;
+    font-weight: bold;
+}
+
+::ng-deep p a:hover {
+    color: #0056b3;
+}
