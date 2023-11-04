@@ -14,7 +14,8 @@
 
         <!-- Content: multiple items (nested) -->
         <mat-accordion *ngIf="spec.items.length > 1" multi>
-            <mat-expansion-panel *ngFor="let item of spec.items" [disabled]="!item.description && !item.image">
+            <mat-expansion-panel *ngFor="let item of spec.items" [disabled]="!item.description && !item.image"
+                class="nested-panel">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         {{ item.name }}

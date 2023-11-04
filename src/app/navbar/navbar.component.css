@@ -1,3 +1,15 @@
 a {
-    padding-right: 20px;
+    margin-right: 20px;
+    text-decoration: none;
+    color: #BBB;
+    transition: color 0.3s;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #FFF;
+}
+
+mat-toolbar {
+    background-color: rebeccapurple;
 }

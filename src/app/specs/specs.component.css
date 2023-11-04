@@ -1,15 +1,29 @@
 .mat-expansion-panel:not(.mat-expanded) {
     border-radius: 8px !important;
     margin: 16px 0;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+
 }
 
 .mat-expansion-panel-header[aria-disabled=true] {
     color: var(--mat-expansion-header-description-color);
 }
 
+.mat-expansion-panel {
+    border-radius: 8px !important;
+    margin: 16px 0;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+}
+
+.nested-panel {
+    background-color: #333;
+}
+
 img {
-    max-width: 30%;
-    max-height: 30%;
+    max-width: 20%;
+    max-height: 20%;
 }
 
 ::ng-deep p a {
