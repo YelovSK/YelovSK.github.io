@@ -1,0 +1,17 @@
+<div class="specs-container">
+    <div class="spec" *ngFor="let spec of specs">
+        <div (click)="toggleSpec(spec)">
+            {{ spec.title }}
+        </div>
+
+        <div class="spec-details" *ngIf="spec.expanded">
+            {{ spec.description }}
+
+            <!--Custom content for specific specs -->
+            <ng-container *ngIf="spec.title === 'GPU'">
+                <img src="/assets/2head.png" alt="GPU Image" />
+                <p>Custom GPU content goes here</p>
+            </ng-container>
+        </div>
+    </div>
+</div>
