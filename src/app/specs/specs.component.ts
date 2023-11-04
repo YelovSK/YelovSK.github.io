@@ -72,7 +72,7 @@ export class SpecsComponent {
     },
     {
       title: 'KEYBOARD', items: [
-        { name: 'Zoom TKL AE', description: '', image: 'the process i went through to get this shit is ridiculous #NotWorthIt' },
+        { name: 'Zoom TKL AE', description: 'the process i went through to get this shit is ridiculous #NotWorthIt', image: '' },
         { name: 'Leopold 750R PD (MX Red)', description: 'order leopold => dogshit spacebar stab => stab breaks => get replacement => again dogshit stab', image: '' },
         { name: 'Vortex Race 3 (MX Blue)', description: 'blue switches are humanity\'s biggest mistake', image: '' },
       ]
