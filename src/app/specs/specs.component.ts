@@ -22,7 +22,7 @@ export class SpecsComponent {
   specs: SpecGroup[] = [
     {
       title: 'GPU', items: [
-        { name: 'MSI GTX 1070 Ti Aero + Arctic Accelero Mono Plus', description: 'pascal masterrace', image: '' }
+        { name: 'GAINWARD GeForce RTX 4070 Ti Panther', description: 'upgrade = 2x performance Pog, 3x price HUH', image: '' }
       ]
     },
     {
