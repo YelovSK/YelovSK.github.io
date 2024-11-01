@@ -9,20 +9,26 @@ import { SpecsComponent } from './specs/specs.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { ClickComponent } from './click/click.component';
+import { HttpClientModule } from '@angular/common/http';
+import { WordComponent } from './word/word.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     HomeComponent,
-    SpecsComponent
+    SpecsComponent,
+    ClickComponent,
+    WordComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
-    MatExpansionModule
+    MatExpansionModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

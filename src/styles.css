@@ -15,3 +15,30 @@ body {
   margin: 0 !important;
   padding: 0 !important;
 }
+
+p a {
+  text-decoration: none;
+  color: #007BFF;
+  transition: color 0.3s;
+  font-weight: bold;
+}
+
+p a:hover {
+  color: #0056b3;
+}
+
+.center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.unselectable {
+  user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}

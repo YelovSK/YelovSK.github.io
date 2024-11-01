@@ -40,3 +40,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# I ain't speccing
+*.spec.ts

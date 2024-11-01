@@ -1,6 +1,5 @@
 <mat-accordion multi>
-    <mat-expansion-panel *ngFor="let spec of specs"
-        [disabled]="spec.items.length === 1 && !spec.items[0].description && !spec.items[0].image">
+    <mat-expansion-panel *ngFor="let spec of SPECS">
         <!-- Header -->
         <mat-expansion-panel-header>
             <mat-panel-title>
@@ -15,10 +14,10 @@
         <!-- Content: multiple items (nested) -->
         <mat-accordion *ngIf="spec.items.length > 1" multi>
             <mat-expansion-panel *ngFor="let item of spec.items" [disabled]="!item.description && !item.image"
-                class="nested-panel">
+                class="nested-panel" [class.obsolete]="item.isObsolete">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        {{ item.name }}
+                        {{ item.name }} {{ item.isObsolete ? OBSOLETE : ''}}
                     </mat-panel-title>
 
                     <ng-template matExpansionPanelContent>

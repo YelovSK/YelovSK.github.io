@@ -7,12 +7,25 @@ import { Component } from '@angular/core';
 })
 export class HomeComponent {
   public aaa: string = '';
+  private interval: number = 500;
 
   constructor() { }
 
   ngOnInit(): void {
-    setInterval(() => {
+    this.startAccelerating();
+  }
+
+  startAccelerating() {
+    const accelerate = () => {
       this.aaa += 'A';
-    }, 10);
+
+      if (this.interval > 1) {
+        this.interval *= 0.96;
+      }
+
+      setTimeout(accelerate, this.interval);
+    };
+
+    accelerate();
   }
 }

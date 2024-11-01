@@ -3,7 +3,6 @@
     margin: 16px 0;
     margin-left: 0.5%;
     margin-right: 0.5%;
-
 }
 
 .mat-expansion-panel-header[aria-disabled=true] {
@@ -21,18 +20,11 @@
     background-color: #333;
 }
 
+.obsolete {
+    background-color: grey;
+}
+
 img {
     max-width: 20%;
     max-height: 20%;
-}
-
-::ng-deep p a {
-    text-decoration: none;
-    color: #007BFF;
-    transition: color 0.3s;
-    font-weight: bold;
-}
-
-::ng-deep p a:hover {
-    color: #0056b3;
 }
