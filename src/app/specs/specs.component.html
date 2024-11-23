@@ -3,7 +3,7 @@
         <!-- Header -->
         <mat-expansion-panel-header>
             <mat-panel-title>
-                {{ spec.title }}
+                {{ spec.title }} {{ spec.items.length > 1 ? '[' + spec.items.length + ']' : '' }}
             </mat-panel-title>
 
             <mat-panel-description>

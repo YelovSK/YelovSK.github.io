@@ -108,8 +108,10 @@ export const SPECS: SpecGroup[] = [
     },
     {
         title: 'FLASHLIGHTS', items: [
+            { name: 'Emisar D1V2 (XHP 70.3 5000K R70)', description: 'EDC, nice mix of flood and throw' },
+            { name: 'Acebeam L35 2.0', description: 'good beam profile, but too large for EDC and a shitty side switch + UI' },
+            { name: 'Emisar D4V2 (519A 5700K DD)', description: 'nice tint' },
             { name: 'Emisar D4 (SST20 5000K)', description: 'ugly tint' },
-            { name: 'Emisar D4V2 (519A 5700K DD)', description: 'nice tint, daily driver' },
             { name: 'Astrolux MF01S', description: 'bright, but like.. what do i need this brightness for?', image: ASSETS_PATHS.SHINY_PARTY },
             { name: 'BLF Q8', description: 'forgot i have this. Aight tint, but replaced with MF01S' },
             { name: 'Astrolux FT03', description: 'thrower, mby one day i\'ll use it for dog walking, for now D4V2 is enough' },
