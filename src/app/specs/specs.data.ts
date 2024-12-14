@@ -81,9 +81,15 @@ export const SPECS: SpecGroup[] = [
     },
     {
         title: 'HEADPHONES', items: [
-            { name: 'Sennheiser HD800', description: 'unusable without EQ' },
-            { name: 'Beyerdynamic DT1990 Pro', description: '(even more) unusable without EQ', isObsolete: true },
-            { name: 'Sony WH-1000XM3 (for commute)', description: 'dogshit sound, but outside noises are even more dogshit' },
+            { name: 'Sennheiser HD800', description: 'unusable without EQ. comfiest headphones i\'ve had on my head' },
+            { name: 'Sennheiser Momentum 4', description: 'for commute and falling asleep to ASMR. should\'ve gotten the qc ultra i think, ANC is more important than sound quality' },
+            { name: 'Beyerdynamic DT1990 Pro', description: '(even more) unusable without EQ. strongestest clamping force', isObsolete: true },
+            { name: 'Sony WH-1000XM3', description: 'dogshit sound, but outside noises are even more dogshit. replaced with momentum 4', isObsolete: true },
+            { name: 'Hifiman HE-400i', description: 'completely fell apart multiple times, chifiman moment', isObsolete: true },
+            { name: 'Beyerdynamic DT990 Pro', description: 'sold it quite some time ago, physically comfy, audibly uncofmy (anyone said treble)', isObsolete: true },
+            { name: 'Audio-Technica ATH-T500', description: 'made me realize i don\'t like closed back headphones', isObsolete: true },
+            { name: 'Vsonic GR07BE', description: 'they sounded nice before the cable got fucked. made me realize i don\'t like IEMs', isObsolete: true },
+            { name: 'Koss Porta Pro', description: 'cable obviously died. technically sound bad, but are kind of fun to listen to. yummy hair', isObsolete: true },
         ]
     },
     {
