@@ -1,5 +1,5 @@
 <mat-accordion multi>
-    <mat-expansion-panel *ngFor="let spec of SPECS">
+    <mat-expansion-panel *ngFor="let spec of sortedSPECS()">
         <!-- Header -->
         <mat-expansion-panel-header>
             <mat-panel-title>
@@ -7,7 +7,7 @@
             </mat-panel-title>
 
             <mat-panel-description>
-                <p [innerText]="getSpecDescription(spec)" class="p-0"></p>
+                <p [innerText]="spec.description" class="p-0"></p>
             </mat-panel-description>
         </mat-expansion-panel-header>
 
