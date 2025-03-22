@@ -4,4 +4,4 @@
 
 # Build
 
-`ng b --output-path docs`
+`ng build`
