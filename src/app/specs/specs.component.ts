@@ -1,12 +1,14 @@
 import { Component, computed } from '@angular/core';
-import { SpecGroup } from './specs.interfaces';
 import { SPECS } from './specs.data';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'app-specs',
-    templateUrl: './specs.component.html',
-    styleUrls: ['./specs.component.css'],
-    standalone: false
+  selector: 'app-specs',
+  templateUrl: './specs.component.html',
+  styleUrls: ['./specs.component.css'],
+  imports: [MatExpansionModule, CommonModule],
+  standalone: true
 })
 export class SpecsComponent {
   readonly OBSOLETE = '[OBSOLETE]';

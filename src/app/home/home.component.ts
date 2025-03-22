@@ -3,10 +3,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, switchMap, timer, tap, map, delay, delayWhen } from 'rxjs';
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.css'],
-    standalone: false
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css'],
+  standalone: true
 })
 export class HomeComponent {
   readonly letterCount = signal(0);

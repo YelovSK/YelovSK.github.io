@@ -5,10 +5,10 @@ import { interval } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 @Component({
-    selector: 'app-click',
-    templateUrl: './click.component.html',
-    styleUrls: ['./click.component.css'],
-    standalone: false
+  selector: 'app-click',
+  templateUrl: './click.component.html',
+  styleUrls: ['./click.component.css'],
+  standalone: true
 })
 export class ClickComponent {
   readonly score = signal(0);
