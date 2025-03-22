@@ -12,7 +12,7 @@ import { tap } from 'rxjs/operators';
 })
 export class ClickComponent {
   readonly score = signal(0);
-  readonly image = signal(ASSETS_PATHS.XDD);
+  readonly image = computed(() => this.isJumping() ? ASSETS_PATHS.XDD : ASSETS_PATHS.DDX);
   readonly position = signal({ top: 0, left: 0 });
   readonly intervalMs = signal(500);
   readonly isJumping = signal(true);
@@ -38,12 +38,10 @@ export class ClickComponent {
 
   private stopJumping() {
     this.isJumping.set(false);
-    this.image.set(ASSETS_PATHS.DDX);
     this.score.update(val => val + 1);
   }
 
   private startJumping() {
-    this.image.set(ASSETS_PATHS.XDD);
     this.randomizePosition();
     this.intervalMs.update(val => val * 0.9);
     this.isJumping.set(true);
