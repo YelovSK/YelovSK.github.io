@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { Component, computed, effect, inject, Signal, signal } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-word',
@@ -9,24 +10,24 @@ import { firstValueFrom } from 'rxjs';
 })
 export class WordComponent {
   private readonly URL = 'https://raw.githubusercontent.com/dwyl/english-words/refs/heads/master/words_alpha.txt';
-  private words: string[] = [];
+  private readonly httpClient = inject(HttpClient);
 
-  word: string = '';
+  readonly word = computed(() => {
+    const wordList = this.words();
+    const index = this.wordIndex();
 
-  constructor(private httpClient: HttpClient) { }
+    return wordList[index];
+  });
 
-  async ngOnInit() {
-    const response = await firstValueFrom(this.httpClient.get(this.URL, { responseType: 'text' }));
-    this.words = response.split('\n');
-    this.word = this.getRandomWord();
-  }
+  private readonly words = toSignal(
+    this.httpClient.get(this.URL, { responseType: 'text' }).pipe(
+      takeUntilDestroyed(),
+      map(response => response.split('\n'))
+    ),
+    { initialValue: [] }
+  );
 
-  onClick() {
-    this.word = this.getRandomWord();
-  }
+  private readonly wordIndex = signal(0);
 
-  private getRandomWord() {
-    const randomIndex = Math.floor(Math.random() * this.words.length);
-    return this.words[randomIndex];
-  }
+  onClick = () => this.wordIndex.set(Math.floor(Math.random() * this.words().length));
 }
