@@ -3,9 +3,10 @@ import { SpecGroup } from './specs.interfaces';
 import { SPECS } from './specs.data';
 
 @Component({
-  selector: 'app-specs',
-  templateUrl: './specs.component.html',
-  styleUrls: ['./specs.component.css'],
+    selector: 'app-specs',
+    templateUrl: './specs.component.html',
+    styleUrls: ['./specs.component.css'],
+    standalone: false
 })
 export class SpecsComponent {
   readonly OBSOLETE = '[OBSOLETE]';
