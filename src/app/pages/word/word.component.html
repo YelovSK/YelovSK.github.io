@@ -1,3 +1,7 @@
 <span (click)="onClick()" class="clickable-text center unselectable">
+    @if (word()) {
     {{ word() }}
+    } @else {
+    {{ loading$ | async }}
+    }
 </span>

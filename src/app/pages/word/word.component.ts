@@ -1,17 +1,19 @@
-import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, Signal, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { interval } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { HttpService } from 'src/app/services/http.service';
 
 @Component({
   selector: 'app-word',
   templateUrl: './word.component.html',
   styleUrls: ['./word.component.css'],
+  imports: [CommonModule],
   standalone: true
 })
 export class WordComponent {
-  private readonly URL = 'https://raw.githubusercontent.com/dwyl/english-words/refs/heads/master/words_alpha.txt';
-  private readonly httpClient = inject(HttpClient);
+  private readonly httpService = inject(HttpService);
 
   readonly word = computed(() => {
     const wordList = this.words();
@@ -20,11 +22,12 @@ export class WordComponent {
     return wordList[index];
   });
 
+  readonly loading$ = interval(500).pipe(
+    map(i => '.'.repeat((i % 3) + 1))
+  );
+
   private readonly words = toSignal(
-    this.httpClient.get(this.URL, { responseType: 'text' }).pipe(
-      takeUntilDestroyed(),
-      map(response => response.split('\n'))
-    ),
+    this.httpService.getWords().pipe(takeUntilDestroyed()),
     { initialValue: [] }
   );
 

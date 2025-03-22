@@ -1,8 +1,8 @@
 import { Component, ElementRef, ViewChild, computed, effect, inject, signal } from '@angular/core';
-import { ASSETS_PATHS } from '../utils';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { interval } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { Constants } from 'src/app/common/constants';
 
 @Component({
   selector: 'app-click',
@@ -12,7 +12,7 @@ import { tap } from 'rxjs/operators';
 })
 export class ClickComponent {
   readonly score = signal(0);
-  readonly image = computed(() => this.isJumping() ? ASSETS_PATHS.XDD : ASSETS_PATHS.DDX);
+  readonly image = computed(() => this.isJumping() ? Constants.Assets.XDD : Constants.Assets.DDX);
   readonly position = signal({ top: 0, left: 0 });
   readonly intervalMs = signal(500);
   readonly isJumping = signal(true);

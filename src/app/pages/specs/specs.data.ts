@@ -1,7 +1,9 @@
 import { SpecGroup } from './specs.interfaces';
-import { ASSETS_PATHS, formatAge } from '../utils';
+import { Constants } from 'src/app/common/constants';
+import { BirthdayToAgePipe } from 'src/app/pipes/birthday-to-age.pipe';
 
 const DOG_BIRTH_DATE = new Date(2013, 5, 18);
+const DOG_AGE = new BirthdayToAgePipe().transform(DOG_BIRTH_DATE);
 
 export const SPECS: SpecGroup[] = [
     {
@@ -21,7 +23,7 @@ export const SPECS: SpecGroup[] = [
     },
     {
         title: 'PSU', items: [
-            { name: 'EVGA 750W G2', description: 'tfw no explosion', image: ASSETS_PATHS.MEGUMIN }
+            { name: 'EVGA 750W G2', description: 'tfw no explosion', image: Constants.Assets.MEGUMIN }
         ]
     },
     {
@@ -118,7 +120,7 @@ export const SPECS: SpecGroup[] = [
             { name: 'Acebeam L35 2.0', description: 'good beam profile, but too large for EDC and a shitty side switch + UI' },
             { name: 'Emisar D4V2 (519A 5700K DD)', description: 'nice tint' },
             { name: 'Emisar D4 (SST20 5000K)', description: 'ugly tint' },
-            { name: 'Astrolux MF01S', description: 'bright, but like.. what do i need this brightness for?', image: ASSETS_PATHS.SHINY_PARTY },
+            { name: 'Astrolux MF01S', description: 'bright, but like.. what do i need this brightness for?', image: Constants.Assets.SHINY_PARTY },
             { name: 'BLF Q8', description: 'forgot i have this. Aight tint, but replaced with MF01S' },
             { name: 'Astrolux FT03', description: 'thrower, mby one day i\'ll use it for dog walking, for now D4V2 is enough' },
         ]
@@ -141,17 +143,17 @@ export const SPECS: SpecGroup[] = [
     },
     {
         title: 'DOG', items: [
-            { name: 'Sunny', description: `maltese female, ${formatAge(DOG_BIRTH_DATE)} old`, image: ASSETS_PATHS.SUNNY },
+            { name: 'Sunny', description: `maltese female, ${DOG_AGE} old`, image: Constants.Assets.SUNNY },
         ]
     },
     {
         title: 'CAT', items: [
-            { name: '', description: '', image: ASSETS_PATHS.UR_CAT },
+            { name: '', description: '', image: Constants.Assets.UR_CAT },
         ]
     },
     {
         title: 'RAT', items: [
-            { name: '', description: '', image: ASSETS_PATHS.XDD },
+            { name: '', description: '', image: Constants.Assets.XDD },
         ]
     },
     {
