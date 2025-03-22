@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, signal, computed, inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BehaviorSubject, switchMap, timer, tap, map, delay, delayWhen } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -6,26 +8,21 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
-  public aaa: string = '';
-  private interval: number = 500;
+  readonly letterCount = signal(0);
+  readonly aaa = computed(() => 'A'.repeat(this.letterCount()));
+  readonly intervalSubject = new BehaviorSubject<number>(500);
 
-  constructor() { }
-
-  ngOnInit(): void {
-    this.startAccelerating();
-  }
-
-  startAccelerating() {
-    const accelerate = () => {
-      this.aaa += 'A';
-
-      if (this.interval > 1) {
-        this.interval *= 0.96;
-      }
-
-      setTimeout(accelerate, this.interval);
-    };
-
-    accelerate();
+  constructor() {
+    this.intervalSubject.pipe(
+      switchMap(interval =>
+        timer(0, interval).pipe(
+          tap(() => this.letterCount.update(count => count + 1)),
+          map(() => Math.max(1, this.intervalSubject.value * 0.96)),
+          delayWhen(newInterval => timer(newInterval)),
+          tap(newInterval => this.intervalSubject.next(newInterval))
+        )
+      ),
+      takeUntilDestroyed()
+    ).subscribe();
   }
 }
