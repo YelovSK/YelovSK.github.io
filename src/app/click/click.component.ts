@@ -1,5 +1,8 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, computed, effect, inject, signal } from '@angular/core';
 import { ASSETS_PATHS } from '../utils';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { interval } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-click',
@@ -7,45 +10,48 @@ import { ASSETS_PATHS } from '../utils';
   styleUrls: ['./click.component.css']
 })
 export class ClickComponent {
-  @ViewChild('jumpingImage') jumpingImage!: ElementRef<HTMLImageElement>;
+  readonly score = signal(0);
+  readonly image = signal(ASSETS_PATHS.XDD);
+  readonly position = signal({ top: 0, left: 0 });
+  readonly intervalMs = signal(500);
+  readonly isJumping = signal(true);
 
-  score = 0;
-  image = ASSETS_PATHS.XDD;
-  position = { top: 0, left: 0 };
+  constructor() {
+    interval(this.intervalMs())
+      .pipe(
+        takeUntilDestroyed(),
+        tap(() => {
+          if (this.isJumping()) {
+            this.randomizePosition();
+          }
+        })
+      )
+      .subscribe();
 
-  private interval: any;
-  private interval_ms = 500;
-
-  ngOnInit() {
-    this.startJumping();
-  }
-
-  startJumping() {
     this.randomizePosition();
-
-    this.interval = setInterval(() => {
-      this.randomizePosition();
-    }, this.interval_ms);
   }
 
   onImageClick() {
-    if (this.image === ASSETS_PATHS.XDD) {
-      clearInterval(this.interval);
-      this.image = ASSETS_PATHS.DDX;
-      this.score++;
-    } else {
-      this.startJumping();
-      this.image = ASSETS_PATHS.XDD;
-      this.interval_ms *= 0.9;
-    }
+    this.isJumping() ? this.stopJumping() : this.startJumping();
   }
 
-  ngOnDestroy() {
-    clearInterval(this.interval);
+  private stopJumping() {
+    this.isJumping.set(false);
+    this.image.set(ASSETS_PATHS.DDX);
+    this.score.update(val => val + 1);
+  }
+
+  private startJumping() {
+    this.image.set(ASSETS_PATHS.XDD);
+    this.randomizePosition();
+    this.intervalMs.update(val => val * 0.9);
+    this.isJumping.set(true);
   }
 
   private randomizePosition() {
-    this.position.top = Math.random() * (window.innerHeight - 100);
-    this.position.left = Math.random() * (window.innerWidth - 100);
+    this.position.set({
+      top: Math.random() * (window.innerHeight - 100),
+      left: Math.random() * (window.innerWidth - 100)
+    });
   }
 }

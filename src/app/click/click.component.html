@@ -1,6 +1,6 @@
 <div class="center unselectable">
-    <p class="score-text">SCORE: {{score}}</p>
+    <p class="score-text">SCORE: {{score()}}</p>
 </div>
 
-<img #jumpingImage [src]="image" draggable="false" (mousedown)="onImageClick()" [style.position]="'absolute'"
-    [style.top.px]="position.top" [style.left.px]="position.left" />
+<img #jumpingImage [src]="image()" draggable="false" (mousedown)="onImageClick()" [style.position]="'absolute'"
+    [style.top.px]="position().top" [style.left.px]="position().left" />
