@@ -3,3 +3,8 @@
     color: rgba(255, 255, 255, 0.1);
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.rat {
+    position: relative;
+    width: 10%;
+}

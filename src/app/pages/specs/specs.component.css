@@ -1,6 +1,18 @@
-.mat-expansion-panel {
-    border-radius: 8px !important;
-    margin: 16px 0.5% !important;
+.mat-accordion {
+    display: grid;
+    gap: 1rem;
+
+    img {
+        max-width: 5%;
+    }
+
+    .mat-expansion-panel {
+        border-radius: 1vmin !important;
+    }
+
+    .mat-expansion-panel-spacing {
+        margin: 0;
+    }
 }
 
 .nested-panel {
@@ -9,8 +21,4 @@
 
 .obsolete {
     background-color: grey;
-}
-
-img {
-    max-width: 5%;
 }

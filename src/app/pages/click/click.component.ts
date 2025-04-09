@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, computed, effect, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, ViewChild, computed, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { interval } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -10,7 +10,9 @@ import { Constants } from 'src/app/common/constants';
   styleUrls: ['./click.component.css'],
   standalone: true
 })
-export class ClickComponent {
+export class ClickComponent implements AfterViewInit {
+  @ViewChild('rat') rat!: ElementRef<HTMLImageElement>;
+
   readonly score = signal(0);
   readonly image = computed(() => this.isJumping() ? Constants.Assets.XDD : Constants.Assets.DDX);
   readonly position = signal({ top: 0, left: 0 });
@@ -28,8 +30,16 @@ export class ClickComponent {
         })
       )
       .subscribe();
+  }
 
+  ngAfterViewInit() {
     this.randomizePosition();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResizeHandler(event: any): void {
+    console.log(event.target!.innerWidth);
+    console.log(window.innerWidth);
   }
 
   onImageClick() {
@@ -48,9 +58,13 @@ export class ClickComponent {
   }
 
   private randomizePosition() {
+    // Stupid
+    const leftMax = window.innerWidth - this.rat.nativeElement.width - 32;
+    const topMax = window.innerHeight - this.rat.nativeElement.height - 32;
+
     this.position.set({
-      top: Math.random() * (window.innerHeight - 100),
-      left: Math.random() * (window.innerWidth - 100)
+      top: Math.random() * topMax,
+      left: Math.random() * leftMax,
     });
   }
 }

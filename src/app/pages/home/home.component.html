@@ -1,1 +1,5 @@
 <p [innerText]="aaa()" class="cringe"></p>
+
+<div class="lower-right">
+    APS: {{ 1000 / (intervalSubject$ | async)! | number: '1.0-0' }}
+</div>
