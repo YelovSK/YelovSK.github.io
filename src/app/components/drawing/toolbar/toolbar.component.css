@@ -1,0 +1,16 @@
+.toolbar {
+    position: relativerelative;
+    left: 0;
+    top: 0;
+    width: 80px;
+    height: 100vh;
+    background: #eee;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+}
+
+.selected {
+    background: red;
+}
