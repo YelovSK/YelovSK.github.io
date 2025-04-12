@@ -1,3 +1,4 @@
+import { BoundingBox } from "src/app/pages/canvas/canvas.interface";
 import { DrawableShape } from "./drawable-shape.interface";
 
 export class Brush implements DrawableShape {
@@ -32,7 +33,7 @@ export class Brush implements DrawableShape {
         }
     }
 
-    getBoundingBox(): { x: number; y: number; width: number; height: number; } {
+    getBoundingBox(): BoundingBox {
         const minX = Math.min(...this.points.map(p => p.x));
         const minY = Math.min(...this.points.map(p => p.y));
         const maxX = Math.max(...this.points.map(p => p.x));

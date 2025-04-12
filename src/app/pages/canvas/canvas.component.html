@@ -1,6 +1,9 @@
 <div class="container">
-    <canvas #canvas width="800" height="600" (mousedown)="onMouseDown(getMousePos($event))"
-        (mousemove)="onMouseMove(getMousePos($event))" (mouseup)="onMouseUp(getMousePos($event))">
+    <canvas
+        #canvas width="800" height="600"
+        (mousedown)="latestMouseDown = $event"
+        (mouseup)="latestMouseUp = $event"
+        (mousemove)="latestMouseMove = $event">
     </canvas>
 
     <app-toolbar></app-toolbar>

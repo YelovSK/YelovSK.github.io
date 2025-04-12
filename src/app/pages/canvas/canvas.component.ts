@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, computed, effect, ElementRef, inject, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, ElementRef, inject, ViewChild } from '@angular/core';
 import { BrushTool } from 'src/app/components/drawing/drawing-tools/brush-tool';
-import { Tool, ToolbarComponent } from "../../components/drawing/toolbar/toolbar.component";
+import { ToolbarComponent } from "../../components/drawing/toolbar/toolbar.component";
 import { DrawableShape } from 'src/app/components/drawing/drawing-shapes/drawable-shape.interface';
 import { RectangleTool } from 'src/app/components/drawing/drawing-tools/rectangle-tool';
-import { DrawingTool } from 'src/app/components/drawing/drawing-tools/drawing-tool.interface';
-import { MousePosition } from './canvas.interface';
+import { BoundingBox, MousePosition } from './canvas.interface';
+import { LoopService } from 'src/app/services/loop.service';
 
 @Component({
   selector: 'app-canvas',
@@ -18,25 +18,32 @@ export class CanvasComponent implements AfterViewInit {
   @ViewChild('canvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild(ToolbarComponent, { static: true }) toolbar!: ToolbarComponent;
 
-  tool = computed(() => {
+  private readonly EVENT_LOOP_FPS = 480;
+  private readonly DRAW_LOOP_FPS = 240;
+
+  private tool = computed(() => {
     switch (this.toolbar.tool()) {
       case 'brush':
         return new BrushTool('black', 2);
 
       case 'rectangle':
         return new RectangleTool('black', 2);
-        break;
 
       default:
         return undefined;
-
     }
-  })
+  });
 
+  private readonly loopService = inject(LoopService);
   private ctx!: CanvasRenderingContext2D;
   private shapes: DrawableShape[] = [];
   private isDragging = false;
+
   private previousMousePos: MousePosition = { x: 0, y: 0 };
+
+  protected latestMouseMove?: MouseEvent;
+  protected latestMouseDown?: MouseEvent;
+  protected latestMouseUp?: MouseEvent;
 
   ngAfterViewInit(): void {
     // Set size
@@ -44,16 +51,32 @@ export class CanvasComponent implements AfterViewInit {
     this.canvas.nativeElement.height = this.canvas.nativeElement.clientHeight;
     this.ctx = this.canvas.nativeElement.getContext('2d')!;
 
-    // Begin drawing loop
-    this.drawLoop();
+    this.loopService.add(() => this.processEvents(), 1000 / this.EVENT_LOOP_FPS, 0);
+    this.loopService.add(() => this.draw(), 1000 / this.DRAW_LOOP_FPS, 1);
   }
 
-  drawLoop() {
+  processEvents() {
+    if (this.latestMouseDown) {
+      this.onMouseDown(this.getMousePos(this.latestMouseDown));
+      this.latestMouseDown = undefined;
+    }
+
+    if (this.latestMouseMove) {
+      this.onMouseMove(this.getMousePos(this.latestMouseMove));
+      this.latestMouseMove = undefined;
+    }
+
+    if (this.latestMouseUp) {
+      this.onMouseUp(this.getMousePos(this.latestMouseUp));
+      this.latestMouseUp = undefined;
+    }
+  }
+
+  draw() {
     this.clearCanvas();
     this.ctx.fillStyle = 'black';
     this.shapes.forEach(shape => shape.draw(this.ctx));
     this.tool()?.getShape()?.draw(this.ctx);
-    requestAnimationFrame(() => this.drawLoop());
   }
 
   onMouseDown(pos: MousePosition) {
@@ -105,8 +128,10 @@ export class CanvasComponent implements AfterViewInit {
     };
   }
 
-  private isInsideBoundingBox(mousePos: MousePosition, bbox: { x: number, y: number, width: number, height: number }): boolean {
-    return mousePos.x >= bbox.x && mousePos.x <= bbox.x + bbox.width &&
-      mousePos.y >= bbox.y && mousePos.y <= bbox.y + bbox.height;
+  private isInsideBoundingBox(mousePos: MousePosition, bbox: BoundingBox): boolean {
+    return mousePos.x >= bbox.x 
+      && mousePos.x <= bbox.x + bbox.width
+      && mousePos.y >= bbox.y 
+      && mousePos.y <= bbox.y + bbox.height;
   }
 }

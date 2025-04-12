@@ -1,3 +1,4 @@
+import { BoundingBox } from "src/app/pages/canvas/canvas.interface";
 import { DrawableShape } from "./drawable-shape.interface";
 
 export class RectangleShape implements DrawableShape {
@@ -22,7 +23,7 @@ export class RectangleShape implements DrawableShape {
         this.y += dy;
     }
 
-    getBoundingBox() {
+    getBoundingBox(): BoundingBox {
         const width = Math.abs(this.width);
         const height = Math.abs(this.height);
 
