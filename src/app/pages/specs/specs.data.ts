@@ -59,7 +59,8 @@ export const SPECS: SpecGroup[] = [
     },
     {
         title: 'KEYBOARD', items: [
-            { name: 'Zoom TKL AE', description: 'the process i went through to get this shit is ridiculous #NotWorthIt' },
+            { name: 'Qwertykeys Evo80', description: 'preordered, still w8ing for arrival' },
+            { name: 'Zoom TKL AE', description: 'the process i went through to get this shit is ridiculous #NotWorthIt', isObsolete: true },
             { name: 'Leopold 750R PD (MX Red)', description: 'order leopold => dogshit spacebar stab => stab breaks => get replacement => again dogshit stab', isObsolete: true },
             { name: 'Vortex Race 3 (MX Blue)', description: 'blue switches are humanity\'s biggest mistake', isObsolete: true },
         ]
@@ -129,6 +130,7 @@ export const SPECS: SpecGroup[] = [
         title: 'CAMERA', items: [
             { name: 'Nikon D7100 + Sigma 18-35 f/1.8', description: '2 heavy 2 bring with me' },
             { name: 'Ricoh GR III X', description: 'got it to be able to have a camera with me at all times and shoot more photos. Turned out to be pure copium' },
+            { name: 'DJI Osmo Action 5 Pro', description: 'w i d e' },
         ]
     },
     {
@@ -140,6 +142,13 @@ export const SPECS: SpecGroup[] = [
         title: 'AC', items: [
             { name: 'Carrier Extreme', description: 'i wish i got an AC sooner' },
         ]
+    },
+    {
+        title: 'DENTAL', items: [
+            { name: 'Oclean X Pro Digital', description: 'toothbrush that vibrates' },
+            { name: 'Philips Power Flosser 3000', description: 'who has the time to floss manually' },
+        ]
+
     },
     {
         title: 'DOG', items: [
