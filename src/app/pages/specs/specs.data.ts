@@ -59,7 +59,7 @@ export const SPECS: SpecGroup[] = [
     },
     {
         title: 'KEYBOARD', items: [
-            { name: 'Qwertykeys Evo80', description: 'preordered, still w8ing for arrival' },
+            { name: 'Qwertykeys Evo80', description: 'kinda like zoom tkl ae, but louder' },
             { name: 'Zoom TKL AE', description: 'the process i went through to get this shit is ridiculous #NotWorthIt', isObsolete: true },
             { name: 'Leopold 750R PD (MX Red)', description: 'order leopold => dogshit spacebar stab => stab breaks => get replacement => again dogshit stab', isObsolete: true },
             { name: 'Vortex Race 3 (MX Blue)', description: 'blue switches are humanity\'s biggest mistake', isObsolete: true },
@@ -103,6 +103,8 @@ export const SPECS: SpecGroup[] = [
     {
         title: 'BALISONG', items: [
             { name: 'Glidr Antarctic 2', description: 'i know all the tricks (0)' },
+            { name: 'Glidr Moab X Meridian', description: 'dropped the antarctic and now it sounds like shit' },
+            { name: 'Armed Shark Kraken v3', description: 'clone but real' },
         ]
     },
     {
@@ -131,6 +133,13 @@ export const SPECS: SpecGroup[] = [
             { name: 'Nikon D7100 + Sigma 18-35 f/1.8', description: '2 heavy 2 bring with me' },
             { name: 'Ricoh GR III X', description: 'got it to be able to have a camera with me at all times and shoot more photos. Turned out to be pure copium' },
             { name: 'DJI Osmo Action 5 Pro', description: 'w i d e' },
+        ]
+    },
+    {
+        title: 'KATANA', items: [
+            { name: 'SAKAI KATANA SHINKEN (from katanamart.de)', description: 'cuz im stupid. 1090 60/45 hrc' },
+            { name: 'Musamune Katana (from samurai.sk)', description: 'cuz im giga stupid. 1060 58/50 hrc' },
+            { name: 'Katana Kamon (from the worst shop in the world)', description: 'cuz im ultra stupid. i dont even know what kind of steel it has, apparently spring steel' }
         ]
     },
     {
