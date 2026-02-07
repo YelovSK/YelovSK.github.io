@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, NgZone } from "@angular/core";
 import { interval } from "rxjs";
 
 interface LoopTask {
@@ -15,8 +15,10 @@ interface LoopTask {
 export class LoopService {
     private tasks: LoopTask[] = [];
 
-    constructor() {
-        interval(1).subscribe(() => this.loop());
+    constructor(private ngZone: NgZone) {
+        this.ngZone.runOutsideAngular(() => {
+            requestAnimationFrame(() => this.loop());
+        });
     }
 
     add(fn: () => void, interval: number, executionOrder: number): void {
@@ -32,8 +34,11 @@ export class LoopService {
 
             if (delta >= task.interval) {
                 task.fn();
-                task.lastExecutionTime = now;
+                // Adjust for drift by syncing to the expected time, but catch up if too far behind
+                task.lastExecutionTime = now - (delta % task.interval);
             }
         }
+
+        requestAnimationFrame(() => this.loop());
     };
 }

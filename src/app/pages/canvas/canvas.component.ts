@@ -1,5 +1,5 @@
 
-import { AfterViewInit, ChangeDetectionStrategy, Component, computed, ElementRef, HostListener, inject, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, ElementRef, HostListener, inject, NgZone, signal, ViewChild } from '@angular/core';
 import { BrushTool } from 'src/app/components/drawing/drawing-tools/brush-tool';
 import { ToolbarComponent } from "../../components/drawing/toolbar/toolbar.component";
 import { DrawableShape } from 'src/app/components/drawing/drawing-shapes/drawable-shape.interface';
@@ -36,6 +36,7 @@ export class CanvasComponent implements AfterViewInit {
   });
 
   private readonly loopService = inject(LoopService);
+  private readonly ngZone = inject(NgZone);
   private ctx!: CanvasRenderingContext2D;
   private shapes: DrawableShape[] = [];
   private isDragging = false;
@@ -45,6 +46,10 @@ export class CanvasComponent implements AfterViewInit {
   protected latestMouseMove?: MouseEvent;
   protected latestMouseDown?: MouseEvent;
   protected latestMouseUp?: MouseEvent;
+
+  protected readonly fps = signal(0);
+  private frameCount = 0;
+  private lastFpsUpdate = 0;
 
   ngAfterViewInit(): void {
     this.canvas.nativeElement.width = this.canvas.nativeElement.clientWidth;
@@ -88,15 +93,39 @@ export class CanvasComponent implements AfterViewInit {
   }
 
   draw() {
+    this.calculateFps();
     this.clearCanvas();
     this.ctx.fillStyle = 'black';
     this.shapes.forEach(shape => shape.draw(this.ctx));
     this.tool()?.getShape()?.draw(this.ctx);
   }
 
+  private calculateFps() {
+    const now = performance.now();
+    this.frameCount++;
+
+    if (now - this.lastFpsUpdate >= 500) {
+      const currentFps = Math.round(this.frameCount * 1000 / (now - this.lastFpsUpdate));
+      this.ngZone.run(() => {
+        this.fps.set(currentFps);
+      });
+      this.frameCount = 0;
+      this.lastFpsUpdate = now;
+    }
+  }
+
+  private draggingShape: DrawableShape | undefined;
+
   onMouseDown(pos: MousePosition) {
     this.isDragging = true;
     this.tool()?.onMouseDown(pos);
+
+    if (!this.tool()) {
+      const shape = this.shapes.find(shape => this.isInsideBoundingBox({ x: pos.x, y: pos.y }, shape.getBoundingBox()));
+      if (shape) {
+        this.draggingShape = shape;
+      }
+    }
   }
 
   onMouseMove(pos: MousePosition) {
@@ -105,13 +134,15 @@ export class CanvasComponent implements AfterViewInit {
 
     this.canvas.nativeElement.style.cursor = 'default';
     if (!this.tool()) {
-      const shape = this.shapes.find(shape => this.isInsideBoundingBox({ x: pos.x, y: pos.y }, shape.getBoundingBox()));
-      if (shape) {
-        this.canvas.nativeElement.style.cursor = 'pointer';
-        if (this.isDragging) {
-          const dx = pos.x - this.previousMousePos.x;
-          const dy = pos.y - this.previousMousePos.y;
-          shape.move(dx, dy);
+      if (this.draggingShape && this.isDragging) {
+        this.canvas.nativeElement.style.cursor = 'grab';
+        const dx = pos.x - this.previousMousePos.x;
+        const dy = pos.y - this.previousMousePos.y;
+        this.draggingShape.move(dx, dy);
+      } else {
+        const shape = this.shapes.find(shape => this.isInsideBoundingBox({ x: pos.x, y: pos.y }, shape.getBoundingBox()));
+        if (shape) {
+          this.canvas.nativeElement.style.cursor = 'grab';
         }
       }
     }
@@ -121,6 +152,7 @@ export class CanvasComponent implements AfterViewInit {
 
   onMouseUp(pos: MousePosition) {
     this.isDragging = false;
+    this.draggingShape = undefined;
     this.tool()?.onMouseUp(pos);
     const shape = this.tool()?.getShape();
     if (shape) {
