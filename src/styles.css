@@ -1,46 +1,42 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: var(--color-yellow-500);
+  --color-primary-hover: var(--color-yellow-400);
+  --color-primary-active: var(--color-yellow-600);
+  --color-primary-soft: var(--color-yellow-500/10);
+}
+
 html,
 body {
   height: 100%;
 }
 
 body {
-  margin: 0;
-  font-family: Roboto,
-    "Helvetica Neue", sans-serif;
-  color: #fff;
-  background-color: #333;
+  @apply bg-zinc-900 text-zinc-200 antialiased font-sans;
 }
 
-.p-0 {
-  margin: 0 !important;
-  padding: 0 !important;
+/* Custom scrollbar for webkit */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-p a {
-  text-decoration: none;
-  color: #007BFF;
-  transition: color 0.3s;
-  font-weight: bold;
+::-webkit-scrollbar-track {
+  @apply bg-zinc-900;
 }
 
-p a:hover {
-  color: #0056b3;
+::-webkit-scrollbar-thumb {
+  @apply bg-zinc-700 rounded-full hover:bg-zinc-600 transition-colors;
 }
 
+/* Utility to center stuff if needed */
 .center {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
 }
 
+/* Disable selection for some elements */
 .unselectable {
-  user-drag: none;
-  user-select: none;
-  -moz-user-select: none;
+  @apply select-none;
   -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
 }

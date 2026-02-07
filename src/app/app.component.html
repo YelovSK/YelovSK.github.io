@@ -1,5 +1,7 @@
-<app-navbar></app-navbar>
+<div class="flex h-screen overflow-hidden text-zinc-100 font-sans">
+    <app-sidebar></app-sidebar>
 
-<div class="container">
-    <router-outlet></router-outlet>
+    <main class="flex-1 overflow-auto bg-zinc-900 relative p-8 mx-auto">
+        <router-outlet></router-outlet>
+    </main>
 </div>

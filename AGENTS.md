@@ -32,7 +32,7 @@ src/app/
 │   ├── word/       # Random English word display
 │   └── canvas/     # Drawing app with brush/rectangle tools
 ├── components/
-│   ├── navbar/     # Navigation bar
+│   ├── sidebar/    # Sidebar navigation (Zinc/Emerald theme)
 │   └── drawing/    # Canvas drawing tools (BrushTool, RectangleTool)
 ├── services/
 │   ├── http.service.ts   # Fetches word list from GitHub
