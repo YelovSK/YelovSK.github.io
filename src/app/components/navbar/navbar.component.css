@@ -9,7 +9,9 @@ a:hover {
     color: #FFF;
 }
 
-mat-toolbar {
+nav {
     display: flex;
     gap: 1rem;
+    padding: 1rem;
+    background-color: #424242;
 }

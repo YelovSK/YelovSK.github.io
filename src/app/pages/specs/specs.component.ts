@@ -1,13 +1,12 @@
 import { Component, computed } from '@angular/core';
 import { SPECS } from './specs.data';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-specs',
   templateUrl: './specs.component.html',
   styleUrls: ['./specs.component.css'],
-  imports: [MatExpansionModule, CommonModule],
+  imports: [CommonModule],
   standalone: true
 })
 export class SpecsComponent {

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { AfterViewInit, Component, computed, ElementRef, inject, ViewChild } from '@angular/core';
 import { BrushTool } from 'src/app/components/drawing/drawing-tools/brush-tool';
 import { ToolbarComponent } from "../../components/drawing/toolbar/toolbar.component";
@@ -9,7 +9,7 @@ import { LoopService } from 'src/app/services/loop.service';
 
 @Component({
   selector: 'app-canvas',
-  imports: [CommonModule, ToolbarComponent],
+  imports: [ToolbarComponent],
   templateUrl: './canvas.component.html',
   styleUrl: './canvas.component.css',
   standalone: true

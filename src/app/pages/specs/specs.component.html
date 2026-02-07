@@ -1,38 +1,40 @@
-<mat-accordion multi>
-    <mat-expansion-panel *ngFor="let spec of sortedSPECS()">
-        <!-- Header -->
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                {{ spec.title }} {{ spec.items.length > 1 ? '[' + spec.items.length + ']' : '' }}
-            </mat-panel-title>
-
-            <mat-panel-description>
-                <p [innerText]="spec.description" class="p-0"></p>
-            </mat-panel-description>
-        </mat-expansion-panel-header>
-
-        <!-- Content: multiple items (nested) -->
-        <mat-accordion *ngIf="spec.items.length > 1" multi>
-            <mat-expansion-panel *ngFor="let item of spec.items" [disabled]="!item.description && !item.image"
-                class="nested-panel" [class.obsolete]="item.isObsolete">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        {{ item.name }} {{ item.isObsolete ? OBSOLETE : ''}}
-                    </mat-panel-title>
-
-                    <ng-template matExpansionPanelContent>
-                        <p [innerHtml]="item.description" class="p-0"></p>
-                        <img *ngIf="item.image" [src]="item.image" alt="Image of {{ item.name }}">
-                    </ng-template>
-                </mat-expansion-panel-header>
-            </mat-expansion-panel>
-        </mat-accordion>
-
-        <!-- Content: single item -->
-        <ng-template matExpansionPanelContent *ngIf="spec.items.length === 1">
-            <p [innerHtml]="spec.items[0].description" class="p-0"></p>
-            <img *ngIf="spec.items[0].image" [src]="spec.items[0].image" alt="Image of {{ spec.items[0].name }}">
-        </ng-template>
-
-    </mat-expansion-panel>
-</mat-accordion>
+<div class="specs-container">
+  @for (spec of sortedSPECS(); track spec) {
+  <details class="spec-panel">
+    <!-- Header -->
+    <summary class="spec-header">
+      <span class="spec-title">{{ spec.title }} {{ spec.items.length > 1 ? '[' + spec.items.length + ']' : '' }}</span>
+      <span class="spec-description">{{ spec.description }}</span>
+    </summary>
+    <!-- Content: multiple items (nested) -->
+    @if (spec.items.length > 1) {
+    <div class="nested-panels">
+      @for (item of spec.items; track item) {
+      <details class="nested-panel" [class.obsolete]="item.isObsolete">
+        <summary class="item-header">
+          {{ item.name }} {{ item.isObsolete ? OBSOLETE : ''}}
+        </summary>
+        @if (item.description || item.image) {
+        <div class="item-content">
+          <p [innerHtml]="item.description" class="p-0"></p>
+          @if (item.image) {
+          <img [src]="item.image" alt="Image of {{ item.name }}">
+          }
+        </div>
+        }
+      </details>
+      }
+    </div>
+    }
+    <!-- Content: single item -->
+    @if (spec.items.length === 1) {
+    <div class="item-content">
+      <p [innerHtml]="spec.items[0].description" class="p-0"></p>
+      @if (spec.items[0].image) {
+      <img [src]="spec.items[0].image" alt="Image of {{ spec.items[0].name }}">
+      }
+    </div>
+    }
+  </details>
+  }
+</div>
