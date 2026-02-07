@@ -1,40 +1,5 @@
-<div class="specs-container">
-  @for (spec of sortedSPECS(); track spec) {
-  <details class="spec-panel">
-    <!-- Header -->
-    <summary class="spec-header">
-      <span class="spec-title">{{ spec.title }} {{ spec.items.length > 1 ? '[' + spec.items.length + ']' : '' }}</span>
-      <span class="spec-description">{{ spec.description }}</span>
-    </summary>
-    <!-- Content: multiple items (nested) -->
-    @if (spec.items.length > 1) {
-    <div class="nested-panels">
-      @for (item of spec.items; track item) {
-      <details class="nested-panel" [class.obsolete]="item.isObsolete">
-        <summary class="item-header">
-          {{ item.name }} {{ item.isObsolete ? OBSOLETE : ''}}
-        </summary>
-        @if (item.description || item.image) {
-        <div class="item-content">
-          <p [innerHtml]="item.description" class="p-0"></p>
-          @if (item.image) {
-          <img [src]="item.image" alt="Image of {{ item.name }}">
-          }
-        </div>
-        }
-      </details>
-      }
-    </div>
-    }
-    <!-- Content: single item -->
-    @if (spec.items.length === 1) {
-    <div class="item-content">
-      <p [innerHtml]="spec.items[0].description" class="p-0"></p>
-      @if (spec.items[0].image) {
-      <img [src]="spec.items[0].image" alt="Image of {{ spec.items[0].name }}">
-      }
-    </div>
-    }
-  </details>
+<div class="space-y-4 animate-fade-in">
+  @for (spec of sortedSPECS(); track spec.title) {
+  <app-spec-group [spec]="spec"></app-spec-group>
   }
 </div>

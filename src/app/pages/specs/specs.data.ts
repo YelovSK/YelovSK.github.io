@@ -96,6 +96,12 @@ export const SPECS: SpecGroup[] = [
         ]
     },
     {
+        title: 'NAS', items: [
+            { name: 'UGREEN DXP4800', description: 'ugreen hasn\'t learned about vibration damping yet' },
+            { name: 'WD Red Plus 8TB x2', description: 'hdds in current year smh (surely ssds will drop in price)' },
+        ]
+    },
+    {
         title: 'SPEAKERS', items: [
             { name: 'JBL LSR305', description: 'sounded good, sold \'em tho cuz not living alone', isObsolete: true }
         ]

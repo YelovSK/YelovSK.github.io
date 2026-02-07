@@ -1,0 +1,111 @@
+<div
+    class="bg-zinc-800 border-zinc-700/50 border rounded-xl shadow-md overflow-hidden hover:border-yellow-500/50 transition-colors w-full">
+
+    <!-- Header (Always Visible, Click to Toggle) -->
+    <div (click)="toggleExpand()"
+        class="px-5 py-4 flex justify-between items-center cursor-pointer select-none bg-zinc-900/30 group hover:bg-zinc-700/20 transition-colors min-h-[64px]">
+
+        <div class="flex items-center gap-3 overflow-hidden flex-1">
+            <h2 class="text-lg font-bold text-yellow-500 tracking-wide shrink-0">
+                {{ spec.title }}
+            </h2>
+
+            @if (!isExpanded()) {
+            <div class="h-4 w-px bg-zinc-700 shrink-0 mx-1"></div>
+            <div class="text-sm text-zinc-400 truncate flex-1 font-medium">
+                @if (spec.activeItems.length > 0) {
+                {{ spec.activeItems[0].name }}
+                @if (spec.activeItems.length > 1) {
+                <span class="text-zinc-600 text-xs ml-1">(+{{ spec.activeItems.length - 1 }})</span>
+                }
+                } @else {
+                <span class="text-zinc-600 italic">No active</span>
+                }
+            </div>
+            }
+        </div>
+
+        <div class="flex items-center gap-3 shrink-0 ml-4">
+            <span
+                class="material-icons text-zinc-500 group-hover:text-yellow-400 transition-colors transform duration-300"
+                [class.rotate-180]="isExpanded()">
+                expand_more
+            </span>
+        </div>
+    </div>
+
+    <!-- Body (Collapsible) -->
+    <div class="overflow-hidden transition-all duration-300 ease-in-out"
+        [style.max-height]="isExpanded() ? '2000px' : '0px'" [class.opacity-100]="isExpanded()"
+        [class.opacity-0]="!isExpanded()">
+
+        <div class="p-5 space-y-6 border-t border-zinc-700/50">
+            <!-- Active Items -->
+            @for (item of spec.activeItems; track item.name) {
+            <div class="space-y-4 relative group/item">
+                <h3 class="font-bold text-zinc-100 text-[15px] group-hover/item:text-yellow-100 transition-colors">
+                    {{ item.name }}
+                </h3>
+
+                @if (item.description) {
+                <div class="text-sm text-zinc-400 leading-relaxed group-hover/item:text-zinc-300 transition-colors"
+                    [innerHtml]="item.description"></div>
+                }
+
+                @if (item.image) {
+                <div
+                    class="mt-3 rounded-lg overflow-hidden bg-zinc-900/50 border border-zinc-700/50 shadow-sm relative group/image w-full sm:w-2/3 md:w-1/2">
+                    <div
+                        class="absolute inset-0 bg-yellow-500/0 group-hover/image:bg-yellow-500/5 transition-colors z-10 pointer-events-none">
+                    </div>
+                    <img [src]="item.image" loading="lazy"
+                        class="w-full h-auto object-cover hover:scale-105 transition-transform duration-700 max-h-64"
+                        alt="{{ item.name }}">
+                </div>
+                }
+            </div>
+            }
+
+            @if (spec.activeItems.length === 0 && spec.obsoleteItems.length === 0) {
+            <div class="flex items-center justify-center py-4">
+                <p class="text-sm text-zinc-600 italic">No gear listed.</p>
+            </div>
+            }
+
+            <!-- Separator if both exist -->
+            @if (spec.activeItems.length > 0 && spec.obsoleteItems.length > 0) {
+            <div class="h-px bg-zinc-700/50 w-full my-6 flex items-center justify-center">
+                <div class="h-1 w-1 rounded-full bg-zinc-600"></div>
+            </div>
+            }
+
+            <!-- Obsolete Items (Integrated) -->
+            @for (item of spec.obsoleteItems; track item.name) {
+            <div class="space-y-4 relative group/item opacity-60 hover:opacity-100 transition-opacity">
+                <div class="flex items-center gap-2">
+                    <h3
+                        class="font-bold text-zinc-400 text-[15px] group-hover/item:text-zinc-200 transition-colors decoration-zinc-600 decoration-1">
+                        {{ item.name }}
+                    </h3>
+                    <span
+                        class="text-[10px] font-bold text-zinc-600 border border-zinc-700 rounded px-1.5 py-0.5 select-none">RETIRED</span>
+                </div>
+
+                @if (item.description) {
+                <div class="text-sm text-zinc-500 leading-relaxed group-hover/item:text-zinc-400 transition-colors"
+                    [innerHtml]="item.description"></div>
+                }
+
+                @if (item.image) {
+                <div
+                    class="mt-3 rounded-lg overflow-hidden bg-zinc-900/50 border border-zinc-700/50 shadow-sm relative group/image w-full sm:w-2/3 md:w-1/2 grayscale hover:grayscale-0 transition-all duration-500">
+                    <img [src]="item.image" loading="lazy"
+                        class="w-full h-auto object-cover hover:scale-105 transition-transform duration-700 max-h-64"
+                        alt="{{ item.name }}">
+                </div>
+                }
+            </div>
+            }
+        </div>
+    </div>
+</div>

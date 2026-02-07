@@ -1,25 +1,31 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { SPECS } from './specs.data';
 import { CommonModule } from '@angular/common';
+import { SpecGroupComponent } from './components/spec-group/spec-group.component';
 
 @Component({
   selector: 'app-specs',
   templateUrl: './specs.component.html',
   styleUrls: ['./specs.component.css'],
-  imports: [CommonModule],
+  imports: [CommonModule, SpecGroupComponent],
   standalone: true
 })
 export class SpecsComponent {
-  readonly OBSOLETE = '[OBSOLETE]';
+
+  // No longer need expandedHistory here as it's managed by child component
 
   readonly sortedSPECS = computed(() =>
-    SPECS.map(spec => ({
-      ...spec,
-      items: [...spec.items].sort((a, b) => (a.isObsolete && !b.isObsolete ? 1 : -1)),
-      description:
-        spec.items.length === 1
-          ? spec.items[0].name + (spec.items[0].isObsolete ? ` ${this.OBSOLETE}` : '')
-          : spec.items.filter(item => !item.isObsolete).map(item => item.name).join(' | ')
-    }))
+    SPECS.map(spec => {
+      // Split items into active and obsolete
+      const active = spec.items.filter(i => !i.isObsolete);
+      const obsolete = spec.items.filter(i => i.isObsolete);
+
+      return {
+        ...spec,
+        activeItems: active,
+        obsoleteItems: obsolete,
+        hasHistory: obsolete.length > 0
+      };
+    })
   );
 }

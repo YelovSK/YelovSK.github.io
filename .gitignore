@@ -44,3 +44,6 @@ Thumbs.db
 
 # I ain't speccing
 *.spec.ts
+
+# Agent bois
+AGENTS.md
