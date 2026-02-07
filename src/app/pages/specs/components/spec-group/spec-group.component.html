@@ -53,15 +53,8 @@
                 }
 
                 @if (item.image) {
-                <div
-                    class="mt-3 rounded-lg overflow-hidden bg-zinc-900/50 border border-zinc-700/50 shadow-sm relative group/image w-full sm:w-2/3 md:w-1/2">
-                    <div
-                        class="absolute inset-0 bg-yellow-500/0 group-hover/image:bg-yellow-500/5 transition-colors z-10 pointer-events-none">
-                    </div>
-                    <img [src]="item.image" loading="lazy"
-                        class="w-full h-auto object-cover hover:scale-105 transition-transform duration-700 max-h-64"
-                        alt="{{ item.name }}">
-                </div>
+                <img [src]="item.image" loading="lazy"
+                    class="hover:scale-105 transition-transform duration-700 max-h-64" alt="{{ item.name }}">
                 }
             </div>
             }
@@ -97,12 +90,8 @@
                 }
 
                 @if (item.image) {
-                <div
-                    class="mt-3 rounded-lg overflow-hidden bg-zinc-900/50 border border-zinc-700/50 shadow-sm relative group/image w-full sm:w-2/3 md:w-1/2 grayscale hover:grayscale-0 transition-all duration-500">
-                    <img [src]="item.image" loading="lazy"
-                        class="w-full h-auto object-cover hover:scale-105 transition-transform duration-700 max-h-64"
-                        alt="{{ item.name }}">
-                </div>
+                <img [src]="item.image" loading="lazy"
+                    class="hover:scale-105 transition-transform duration-700 max-h-64" alt="{{ item.name }}" />
                 }
             </div>
             }
