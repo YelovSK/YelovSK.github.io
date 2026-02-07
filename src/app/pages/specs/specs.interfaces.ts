@@ -9,3 +9,8 @@ export interface SpecItem {
     image?: string;
     isObsolete?: boolean;
 }
+
+export interface ProcessedSpecGroup extends SpecGroup {
+    activeItems: SpecItem[];
+    obsoleteItems: SpecItem[];
+}

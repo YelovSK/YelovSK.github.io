@@ -1,12 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SpecItem, SpecGroup } from '../../specs.interfaces';
-
-export interface ProcessedSpecGroup extends SpecGroup {
-    activeItems: SpecItem[];
-    obsoleteItems: SpecItem[];
-    hasHistory: boolean;
-}
+import { ProcessedSpecGroup } from '../../specs.interfaces';
 
 @Component({
     selector: 'app-spec-group',

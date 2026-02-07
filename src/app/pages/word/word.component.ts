@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, inject, Signal, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { interval } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { HttpService } from 'src/app/services/http.service';
+import { map, shareReplay, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-word',
@@ -14,7 +14,7 @@ import { HttpService } from 'src/app/services/http.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WordComponent {
-  private readonly httpService = inject(HttpService);
+  private readonly http = inject(HttpClient);
 
   readonly word = computed(() => {
     const wordList = this.words();
@@ -23,12 +23,17 @@ export class WordComponent {
     return wordList[index];
   });
 
-  readonly loading$ = interval(500).pipe(
+  readonly loading$ = interval(200).pipe(
     map(i => '.'.repeat((i % 3) + 1))
   );
 
   private readonly words = toSignal(
-    this.httpService.getWords().pipe(takeUntilDestroyed()),
+    this.http.get('https://raw.githubusercontent.com/dwyl/english-words/refs/heads/master/words_alpha.txt', { responseType: 'text' }).pipe(
+      take(1),
+      takeUntilDestroyed(),
+      map(response => response.split('\n')),
+      shareReplay(1),
+    ),
     { initialValue: [] }
   );
 

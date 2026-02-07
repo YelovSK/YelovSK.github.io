@@ -12,25 +12,28 @@ import { Constants } from 'src/app/common/constants';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ClickComponent implements AfterViewInit {
-  @ViewChild('rat') rat!: ElementRef<HTMLImageElement>;
+  @ViewChild('rat', { static: true }) rat!: ElementRef<HTMLImageElement>;
+  @ViewChild('arena', { static: true }) arena!: ElementRef<HTMLDivElement>;
 
-  readonly score = signal(0);
-  readonly image = computed(() => this.isJumping() ? Constants.Assets.XDD : Constants.Assets.DDX);
-  readonly position = signal({ top: 0, left: 0 });
-  readonly intervalMs = signal(500);
+readonly score = signal(0);
   readonly isJumping = signal(true);
+  readonly intervalMs = signal(1000);
+  readonly position = signal({ top: 0, left: 0 });
+
+  readonly image = computed(() =>
+    this.isJumping() ? Constants.Assets.XDD : Constants.Assets.DDX
+  );
 
   constructor() {
-    interval(this.intervalMs())
-      .pipe(
-        takeUntilDestroyed(),
-        tap(() => {
-          if (this.isJumping()) {
-            this.randomizePosition();
-          }
-        })
-      )
-      .subscribe();
+    effect((onCleanup) => {
+      if (!this.isJumping()) return;
+
+      const intervalId = setInterval(() => {
+        this.randomizePosition();
+      }, this.intervalMs());
+
+      onCleanup(() => clearInterval(intervalId));
+    });
   }
 
   ngAfterViewInit() {
@@ -38,27 +41,34 @@ export class ClickComponent implements AfterViewInit {
   }
 
   onImageClick() {
-    this.isJumping() ? this.stopJumping() : this.startJumping();
+    if (this.isJumping()) {
+      this.stopJumping();
+    } else {
+      this.startJumping();
+    }
   }
 
   private stopJumping() {
     this.isJumping.set(false);
-    this.score.update(val => val + 1);
+    this.score.update(v => v + 1);
   }
 
   private startJumping() {
-    this.randomizePosition();
-    this.intervalMs.update(val => val * 0.9);
+    this.intervalMs.update(v => Math.max(100, v * 0.95));
     this.isJumping.set(true);
+    this.randomizePosition();
   }
 
   private randomizePosition() {
-    const leftMax = window.innerWidth - this.rat.nativeElement.width - 32;
-    const topMax = window.innerHeight - this.rat.nativeElement.height - 32;
+    const arena = this.arena.nativeElement;
+    const rat = this.rat.nativeElement;
+
+    const leftMax = arena.clientWidth - rat.width;
+    const topMax = arena.clientHeight - rat.height;
 
     this.position.set({
-      top: Math.random() * topMax,
-      left: Math.random() * leftMax,
+      left: Math.random() * Math.max(0, leftMax),
+      top: Math.random() * Math.max(0, topMax),
     });
   }
 }

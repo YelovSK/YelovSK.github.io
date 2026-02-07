@@ -1,6 +1,6 @@
 <span (click)="onClick()" class="clickable-text center unselectable">
-    @if (word()) {
-    {{ word() }}
+    @if (word(); as word) {
+    {{ word }}
     } @else {
     {{ loading$ | async }}
     }

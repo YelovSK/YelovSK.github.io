@@ -1,8 +1,17 @@
-<div class="container">
-    <div class="center unselectable">
-        <p class="score-text">SCORE: {{score()}}</p>
-    </div>
+<div class="relative w-full h-full">
+  <div class="absolute inset-0 grid place-items-center pointer-events-none">
+    <p class="text-[5em] text-white/10 font-roboto">SCORE: {{ score() }}</p>
+  </div>
 
-    <img #rat class="rat" [src]="image()" draggable="false" (mousedown)="onImageClick()" [style.position]="'relative'"
-        [style.top.px]="position().top" [style.left.px]="position().left" />
+  <div #arena class="relative w-full h-full overflow-hidden">
+    <img
+      #rat
+      class="absolute w-[10%] cursor-pointer"
+      [src]="image()"
+      draggable="false"
+      (mousedown)="onImageClick()"
+      [style.top.px]="position().top"
+      [style.left.px]="position().left"
+    />
+  </div>
 </div>
