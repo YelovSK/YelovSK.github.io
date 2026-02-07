@@ -1,10 +1,9 @@
-<div class="container">
-    <canvas
-        #canvas width="800" height="600"
-        (mousedown)="latestMouseDown = $event"
-        (mouseup)="latestMouseUp = $event"
+<div
+    class="flex flex-row w-full h-full overflow-hidden border border-zinc-700/50 rounded-xl bg-white shadow-lg relative">
+    <canvas #canvas class="flex-1 block min-w-0 min-h-0 touch-none cursor-crosshair"
+        (mousedown)="latestMouseDown = $event" (mouseup)="latestMouseUp = $event"
         (mousemove)="latestMouseMove = $event">
     </canvas>
 
-    <app-toolbar></app-toolbar>
+    <app-toolbar class="flex-none border-l border-zinc-200"></app-toolbar>
 </div>

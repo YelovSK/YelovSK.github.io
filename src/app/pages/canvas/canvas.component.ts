@@ -1,5 +1,5 @@
 
-import { AfterViewInit, ChangeDetectionStrategy, Component, computed, ElementRef, inject, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, ElementRef, HostListener, inject, ViewChild } from '@angular/core';
 import { BrushTool } from 'src/app/components/drawing/drawing-tools/brush-tool';
 import { ToolbarComponent } from "../../components/drawing/toolbar/toolbar.component";
 import { DrawableShape } from 'src/app/components/drawing/drawing-shapes/drawable-shape.interface';
@@ -47,13 +47,27 @@ export class CanvasComponent implements AfterViewInit {
   protected latestMouseUp?: MouseEvent;
 
   ngAfterViewInit(): void {
-
     this.canvas.nativeElement.width = this.canvas.nativeElement.clientWidth;
     this.canvas.nativeElement.height = this.canvas.nativeElement.clientHeight;
     this.ctx = this.canvas.nativeElement.getContext('2d')!;
 
     this.loopService.add(() => this.processEvents(), 1000 / this.EVENT_LOOP_FPS, 0);
     this.loopService.add(() => this.draw(), 1000 / this.DRAW_LOOP_FPS, 1);
+
+    const resizeObserver = new ResizeObserver(() => this.resizeCanvas());
+    resizeObserver.observe(this.canvas.nativeElement);
+  }
+
+  resizeCanvas() {
+    const canvasEl = this.canvas.nativeElement;
+
+    const width = canvasEl.clientWidth;
+    const height = canvasEl.clientHeight;
+
+    if (canvasEl.width !== width || canvasEl.height !== height) {
+      canvasEl.width = width;
+      canvasEl.height = height;
+    }
   }
 
   processEvents() {

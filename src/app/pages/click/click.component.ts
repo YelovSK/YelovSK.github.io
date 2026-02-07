@@ -37,12 +37,6 @@ export class ClickComponent implements AfterViewInit {
     this.randomizePosition();
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResizeHandler(event: any): void {
-    console.log(event.target!.innerWidth);
-    console.log(window.innerWidth);
-  }
-
   onImageClick() {
     this.isJumping() ? this.stopJumping() : this.startJumping();
   }

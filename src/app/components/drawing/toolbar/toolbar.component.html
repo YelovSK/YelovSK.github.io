@@ -1,4 +1,15 @@
-<div class="toolbar">
-    <button (click)="setBrushTool()" [ngClass]="{'selected': brushSelected()}">🖌️ Brush</button>
-    <button (click)="setRectangleTool()" [ngClass]="{'selected': rectangleSelected()}">▭ Rectangle</button>
+<div class="relative w-[60px] h-full bg-zinc-200 flex flex-col gap-2 p-2 border-r border-zinc-300">
+    <button (click)="setBrushTool()"
+        class="w-full aspect-square flex items-center justify-center rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
+        [ngClass]="brushSelected() ? 'bg-yellow-500 text-zinc-900 shadow-sm' : 'bg-white text-zinc-600 hover:bg-zinc-100 shadow-sm'"
+        title="Brush Tool">
+        <span class="text-xl">🖌️</span>
+    </button>
+
+    <button (click)="setRectangleTool()"
+        class="w-full aspect-square flex items-center justify-center rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
+        [ngClass]="rectangleSelected() ? 'bg-yellow-500 text-zinc-900 shadow-sm' : 'bg-white text-zinc-600 hover:bg-zinc-100 shadow-sm'"
+        title="Rectangle Tool">
+        <span class="text-xl font-bold">▭</span>
+    </button>
 </div>
