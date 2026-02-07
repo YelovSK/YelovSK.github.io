@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal, computed, inject, DestroyRef } from '@angular/core';
+import { Component, signal, computed, inject, DestroyRef, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, switchMap, timer, tap, map, delay, delayWhen } from 'rxjs';
 
@@ -8,7 +8,8 @@ import { BehaviorSubject, switchMap, timer, tap, map, delay, delayWhen } from 'r
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   imports: [CommonModule],
-  standalone: true
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent {
   readonly letterCount = signal(0);

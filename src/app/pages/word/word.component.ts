@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, Signal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, Signal, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { interval } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -10,7 +10,8 @@ import { HttpService } from 'src/app/services/http.service';
   templateUrl: './word.component.html',
   styleUrls: ['./word.component.css'],
   imports: [CommonModule],
-  standalone: true
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WordComponent {
   private readonly httpService = inject(HttpService);

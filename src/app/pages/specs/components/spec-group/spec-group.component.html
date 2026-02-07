@@ -1,7 +1,7 @@
 <div
     class="bg-zinc-800 border-zinc-700/50 border rounded-xl shadow-md overflow-hidden hover:border-yellow-500/50 transition-colors w-full">
 
-    <!-- Header (Always Visible, Click to Toggle) -->
+
     <div (click)="toggleExpand()"
         class="px-5 py-4 flex justify-between items-center cursor-pointer select-none bg-zinc-900/30 group hover:bg-zinc-700/20 transition-colors min-h-[64px]">
 
@@ -34,13 +34,13 @@
         </div>
     </div>
 
-    <!-- Body (Collapsible) -->
+
     <div class="overflow-hidden transition-all duration-300 ease-in-out"
         [style.max-height]="isExpanded() ? '2000px' : '0px'" [class.opacity-100]="isExpanded()"
         [class.opacity-0]="!isExpanded()">
 
         <div class="p-5 space-y-6 border-t border-zinc-700/50">
-            <!-- Active Items -->
+
             @for (item of spec.activeItems; track item.name) {
             <div class="space-y-4 relative group/item">
                 <h3 class="font-bold text-zinc-100 text-[15px] group-hover/item:text-yellow-100 transition-colors">
@@ -72,14 +72,14 @@
             </div>
             }
 
-            <!-- Separator if both exist -->
+
             @if (spec.activeItems.length > 0 && spec.obsoleteItems.length > 0) {
             <div class="h-px bg-zinc-700/50 w-full my-6 flex items-center justify-center">
                 <div class="h-1 w-1 rounded-full bg-zinc-600"></div>
             </div>
             }
 
-            <!-- Obsolete Items (Integrated) -->
+
             @for (item of spec.obsoleteItems; track item.name) {
             <div class="space-y-4 relative group/item opacity-60 hover:opacity-100 transition-opacity">
                 <div class="flex items-center gap-2">

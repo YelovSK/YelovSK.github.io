@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, ViewChild, computed, effect, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, ViewChild, computed, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { interval } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -8,7 +8,8 @@ import { Constants } from 'src/app/common/constants';
   selector: 'app-click',
   templateUrl: './click.component.html',
   styleUrls: ['./click.component.css'],
-  standalone: true
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ClickComponent implements AfterViewInit {
   @ViewChild('rat') rat!: ElementRef<HTMLImageElement>;
@@ -58,7 +59,6 @@ export class ClickComponent implements AfterViewInit {
   }
 
   private randomizePosition() {
-    // Stupid
     const leftMax = window.innerWidth - this.rat.nativeElement.width - 32;
     const topMax = window.innerHeight - this.rat.nativeElement.height - 32;
 

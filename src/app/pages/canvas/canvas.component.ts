@@ -1,5 +1,5 @@
 
-import { AfterViewInit, Component, computed, ElementRef, inject, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, ElementRef, inject, ViewChild } from '@angular/core';
 import { BrushTool } from 'src/app/components/drawing/drawing-tools/brush-tool';
 import { ToolbarComponent } from "../../components/drawing/toolbar/toolbar.component";
 import { DrawableShape } from 'src/app/components/drawing/drawing-shapes/drawable-shape.interface';
@@ -12,7 +12,8 @@ import { LoopService } from 'src/app/services/loop.service';
   imports: [ToolbarComponent],
   templateUrl: './canvas.component.html',
   styleUrl: './canvas.component.css',
-  standalone: true
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CanvasComponent implements AfterViewInit {
   @ViewChild('canvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
@@ -46,7 +47,7 @@ export class CanvasComponent implements AfterViewInit {
   protected latestMouseUp?: MouseEvent;
 
   ngAfterViewInit(): void {
-    // Set size
+
     this.canvas.nativeElement.width = this.canvas.nativeElement.clientWidth;
     this.canvas.nativeElement.height = this.canvas.nativeElement.clientHeight;
     this.ctx = this.canvas.nativeElement.getContext('2d')!;
@@ -87,7 +88,7 @@ export class CanvasComponent implements AfterViewInit {
   onMouseMove(pos: MousePosition) {
     this.tool()?.onMouseMove(pos, this.isDragging);
 
-    // Drag shapes
+
     this.canvas.nativeElement.style.cursor = 'default';
     if (!this.tool()) {
       const shape = this.shapes.find(shape => this.isInsideBoundingBox({ x: pos.x, y: pos.y }, shape.getBoundingBox()));
@@ -129,9 +130,9 @@ export class CanvasComponent implements AfterViewInit {
   }
 
   private isInsideBoundingBox(mousePos: MousePosition, bbox: BoundingBox): boolean {
-    return mousePos.x >= bbox.x 
+    return mousePos.x >= bbox.x
       && mousePos.x <= bbox.x + bbox.width
-      && mousePos.y >= bbox.y 
+      && mousePos.y >= bbox.y
       && mousePos.y <= bbox.y + bbox.height;
   }
 }
