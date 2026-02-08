@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, EventEmitter, Output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ToolService } from 'src/app/services/tool.service';
+import { DrawingOptionsService } from 'src/app/services/drawing-options.service';
 
 export type Tool = 'brush' | 'rectangle';
 
@@ -12,19 +14,36 @@ export type Tool = 'brush' | 'rectangle';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarComponent {
-  public tool = signal<Tool | null>(null);
+  private toolService = inject(ToolService);
+  private drawingOptions = inject(DrawingOptionsService);
+
+  public tool = this.toolService.activeToolName;
   public brushSelected = computed(() => this.tool() === 'brush');
   public rectangleSelected = computed(() => this.tool() === 'rectangle');
+  public selectSelected = computed(() => this.tool() === 'select');
+
+  public color = this.drawingOptions.color;
+  public lineWidth = this.drawingOptions.lineWidth;
 
   setBrushTool() {
-    this.tool.set('brush');
+    this.toolService.selectTool('brush');
   }
 
   setRectangleTool() {
-    this.tool.set('rectangle');
+    this.toolService.selectTool('rectangle');
   }
 
-  deselectTool() {
-    this.tool.set(null);
+  setSelectTool() {
+    this.toolService.selectTool('select');
+  }
+
+  onColorChange(event: Event) {
+    const color = (event.target as HTMLInputElement).value;
+    this.drawingOptions.setColor(color);
+  }
+
+  onLineWidthChange(event: Event) {
+    const width = Number((event.target as HTMLInputElement).value);
+    this.drawingOptions.setLineWidth(width);
   }
 }

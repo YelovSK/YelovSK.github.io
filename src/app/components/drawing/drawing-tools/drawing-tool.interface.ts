@@ -1,9 +1,13 @@
 import { MousePosition } from "src/app/pages/canvas/canvas.interface";
-import { DrawableShape } from "../drawing-shapes/drawable-shape.interface";
 
-export interface DrawingTool<T extends DrawableShape = DrawableShape> {
+export interface DrawingTool {
     onMouseDown(event: MousePosition): void;
     onMouseMove(event: MousePosition, isDragging: boolean): void;
     onMouseUp(event: MousePosition): void;
-    getShape(): T | undefined;
+
+    onEnter?(): void;
+    onExit?(): void;
+
+    drawOverlay?(ctx: CanvasRenderingContext2D): void;
+    getCursor(event: MousePosition): string;
 }

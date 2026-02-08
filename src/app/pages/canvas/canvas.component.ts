@@ -1,11 +1,14 @@
-
-import { AfterViewInit, ChangeDetectionStrategy, Component, computed, ElementRef, HostListener, inject, NgZone, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, inject, NgZone, signal, ViewChild } from '@angular/core';
 import { BrushTool } from 'src/app/components/drawing/drawing-tools/brush-tool';
 import { ToolbarComponent } from "../../components/drawing/toolbar/toolbar.component";
-import { DrawableShape } from 'src/app/components/drawing/drawing-shapes/drawable-shape.interface';
 import { RectangleTool } from 'src/app/components/drawing/drawing-tools/rectangle-tool';
-import { BoundingBox, MousePosition } from './canvas.interface';
+import { MousePosition } from './canvas.interface';
 import { LoopService } from 'src/app/services/loop.service';
+import { SceneService } from 'src/app/services/scene.service';
+import { ToolService } from 'src/app/services/tool.service';
+import { SelectTool } from 'src/app/components/drawing/drawing-tools/select-tool';
+
+import { DrawingOptionsService } from 'src/app/services/drawing-options.service';
 
 @Component({
   selector: 'app-canvas',
@@ -22,26 +25,14 @@ export class CanvasComponent implements AfterViewInit {
   private readonly EVENT_LOOP_FPS = 480;
   private readonly DRAW_LOOP_FPS = 240;
 
-  private tool = computed(() => {
-    switch (this.toolbar.tool()) {
-      case 'brush':
-        return new BrushTool('black', 2);
-
-      case 'rectangle':
-        return new RectangleTool('black', 2);
-
-      default:
-        return undefined;
-    }
-  });
-
   private readonly loopService = inject(LoopService);
+  private readonly sceneService = inject(SceneService);
+  private readonly toolService = inject(ToolService);
+  private readonly drawingOptions = inject(DrawingOptionsService);
   private readonly ngZone = inject(NgZone);
-  private ctx!: CanvasRenderingContext2D;
-  private shapes: DrawableShape[] = [];
-  private isDragging = false;
 
-  private previousMousePos: MousePosition = { x: 0, y: 0 };
+  private ctx!: CanvasRenderingContext2D;
+  private isDragging = false;
 
   protected latestMouseMove?: MouseEvent;
   protected latestMouseDown?: MouseEvent;
@@ -56,11 +47,21 @@ export class CanvasComponent implements AfterViewInit {
     this.canvas.nativeElement.height = this.canvas.nativeElement.clientHeight;
     this.ctx = this.canvas.nativeElement.getContext('2d')!;
 
+    this.registerTools();
+
     this.loopService.add(() => this.processEvents(), 1000 / this.EVENT_LOOP_FPS, 0);
     this.loopService.add(() => this.draw(), 1000 / this.DRAW_LOOP_FPS, 1);
 
     const resizeObserver = new ResizeObserver(() => this.resizeCanvas());
     resizeObserver.observe(this.canvas.nativeElement);
+  }
+
+  private registerTools() {
+    this.toolService.registerTool('select', new SelectTool(this.sceneService));
+    this.toolService.registerTool('brush', new BrushTool(this.sceneService, this.drawingOptions));
+    this.toolService.registerTool('rectangle', new RectangleTool(this.sceneService, this.drawingOptions));
+
+    this.toolService.selectTool('select');
   }
 
   resizeCanvas() {
@@ -96,8 +97,9 @@ export class CanvasComponent implements AfterViewInit {
     this.calculateFps();
     this.clearCanvas();
     this.ctx.fillStyle = 'black';
-    this.shapes.forEach(shape => shape.draw(this.ctx));
-    this.tool()?.getShape()?.draw(this.ctx);
+
+    this.sceneService.shapes().forEach(shape => shape.draw(this.ctx));
+    this.toolService.activeTool()?.drawOverlay?.(this.ctx);
   }
 
   private calculateFps() {
@@ -114,52 +116,23 @@ export class CanvasComponent implements AfterViewInit {
     }
   }
 
-  private draggingShape: DrawableShape | undefined;
-
   onMouseDown(pos: MousePosition) {
     this.isDragging = true;
-    this.tool()?.onMouseDown(pos);
-
-    if (!this.tool()) {
-      const shape = this.shapes.find(shape => this.isInsideBoundingBox({ x: pos.x, y: pos.y }, shape.getBoundingBox()));
-      if (shape) {
-        this.draggingShape = shape;
-      }
-    }
+    this.toolService.activeTool()?.onMouseDown(pos);
   }
 
   onMouseMove(pos: MousePosition) {
-    this.tool()?.onMouseMove(pos, this.isDragging);
+    this.toolService.activeTool()?.onMouseMove(pos, this.isDragging);
 
+    const cursor = this.toolService.activeTool()?.getCursor(pos) ?? 'default';
+    this.canvas.nativeElement.style.cursor = cursor;
 
-    this.canvas.nativeElement.style.cursor = 'default';
-    if (!this.tool()) {
-      if (this.draggingShape && this.isDragging) {
-        this.canvas.nativeElement.style.cursor = 'grab';
-        const dx = pos.x - this.previousMousePos.x;
-        const dy = pos.y - this.previousMousePos.y;
-        this.draggingShape.move(dx, dy);
-      } else {
-        const shape = this.shapes.find(shape => this.isInsideBoundingBox({ x: pos.x, y: pos.y }, shape.getBoundingBox()));
-        if (shape) {
-          this.canvas.nativeElement.style.cursor = 'grab';
-        }
-      }
-    }
-
-    this.previousMousePos = pos;
+    this.latestMouseMove = undefined;
   }
 
   onMouseUp(pos: MousePosition) {
     this.isDragging = false;
-    this.draggingShape = undefined;
-    this.tool()?.onMouseUp(pos);
-    const shape = this.tool()?.getShape();
-    if (shape) {
-      this.shapes.push(shape);
-    }
-
-    this.toolbar.deselectTool();
+    this.toolService.activeTool()?.onMouseUp(pos);
   }
 
   private clearCanvas() {
@@ -173,12 +146,5 @@ export class CanvasComponent implements AfterViewInit {
       x: event.clientX - rect.left,
       y: event.clientY - rect.top
     };
-  }
-
-  private isInsideBoundingBox(mousePos: MousePosition, bbox: BoundingBox): boolean {
-    return mousePos.x >= bbox.x
-      && mousePos.x <= bbox.x + bbox.width
-      && mousePos.y >= bbox.y
-      && mousePos.y <= bbox.y + bbox.height;
   }
 }
