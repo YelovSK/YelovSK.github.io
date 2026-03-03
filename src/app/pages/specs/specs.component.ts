@@ -19,7 +19,7 @@ import duration from 'dayjs/plugin/duration';
 })
 export class SpecsComponent {
   private readonly DOG_BIRTH_DATE = dayjs('2013-05-18');
-  private readonly GIST = 'https://gist.githubusercontent.com/YelovSK/5587ec44bb8d2b0a83a0144b2abf6286/raw/7df555c624fe2c5ac7c56ec29376c65ea86bd977/specs.json';
+  private readonly GIST = 'https://gist.githubusercontent.com/YelovSK/5587ec44bb8d2b0a83a0144b2abf6286/raw/specs.json';
   
   private readonly client = inject(HttpClient);
   private readonly toast = inject(ToastService);
