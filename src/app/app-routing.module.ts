@@ -4,6 +4,7 @@ import { ClickComponent } from './pages/click/click.component';
 import { WordComponent } from './pages/word/word.component';
 import { CanvasComponent } from './pages/canvas/canvas.component';
 import { SoftwareComponent } from './pages/software/software.component';
+import { PretextComponent } from './pages/pretext/pretext.component';
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
@@ -13,4 +14,5 @@ export const routes: Routes = [
   { path: 'click', component: ClickComponent },
   { path: 'word', component: WordComponent },
   { path: 'canvas', component: CanvasComponent },
+  { path: 'pretext', component: PretextComponent },
 ];

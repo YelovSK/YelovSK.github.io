@@ -24,5 +24,6 @@ export class SidebarComponent {
     { path: '/click', label: 'Click', icon: 'mouse' },
     { path: '/word', label: 'Word', icon: 'font_download' },
     { path: '/canvas', label: 'Canvas', icon: 'brush' },
+    { path: '/pretext', label: 'Pretext', icon: 'text_fields' },
   ];
 }

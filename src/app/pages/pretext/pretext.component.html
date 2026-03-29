@@ -1,0 +1,23 @@
+<div
+  #stage
+  class="relative min-h-[calc(100vh-4rem)] overflow-hidden select-none"
+  (mousemove)="onPointerMove($event)">
+  <img
+    alt="A"
+    class="pointer-events-none absolute"
+    [style.left.px]="glyph().x"
+    [style.top.px]="glyph().y"
+    [style.width.px]="glyph().width"
+    [style.height.px]="glyph().height"
+    [src]="glyph().src">
+
+  @for (line of lines(); track $index) {
+    <div
+      class="absolute whitespace-pre text-zinc-200 [font-family:Georgia,_'Times_New_Roman',_serif] text-[18px] leading-[20px] md:text-[24px] md:leading-[26px]"
+      [style.left.px]="line.x"
+      [style.top.px]="line.y"
+      [style.width.px]="line.width">
+      {{ line.text }}
+    </div>
+  }
+</div>
